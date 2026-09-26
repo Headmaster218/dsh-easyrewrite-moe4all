@@ -4,7 +4,9 @@
 <img src="https://raw.githubusercontent.com/Renzic-Stone/DSH-EasyRewrite/main/assets/logo.png" alt="dsh-easyrewrite" width="320" />
 </picture>
 
-# DSH-EasyRewrite
+# DSH-EasyRewrite for MoE4All
+
+> MoE4All-maintained edition of `dsh-easyrewrite`. See [UPSTREAM.md](UPSTREAM.md) for the exact source checkpoint, attribution, and purpose of this independent repository.
 
 [English](README.en.md) | [日本語](README.ja.md)
 

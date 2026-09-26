@@ -1,4 +1,4 @@
 # dsh-easyrewrite bundle patch layer —— 把本插件挂载进 profile 树。
 - insert:
-    - id: dsh-easyrewrite
-      name: dsh-easyrewrite
+    - id: dsh-easyrewrite-moe4all
+      name: dsh-easyrewrite-moe4all

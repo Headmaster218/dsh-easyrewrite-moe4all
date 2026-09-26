@@ -1,7 +1,7 @@
 {
-  "name": "dsh-easyrewrite",
-  "version": "2.4.1",
-  "description": "DSH Web内目前最无感的消息撤回、重编辑插件，原版体验，兼容性强，功能简单可开关，设置丰富，现代化轻量ui框架。The most seamless message recall & re-edit plugin for DSH Web — native experience, strong compatibility, simple toggles, rich settings, modern lightweight UI. DSH Web で最もシームレスなメッセージ撤回・再編集プラグイン——ネイティブ体験、高い互換性、シンプルなトグル、充実した設定、モダンで軽量な UI。",
+  "name": "dsh-easyrewrite-moe4all",
+  "version": "2.4.1-moe4all.1",
+  "description": "MoE4All edition of the DSH message recall and re-edit plugin",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -64,6 +64,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Renzic-Stone/DSH-EasyRewrite.git"
+    "url": "git+https://github.com/Headmaster218/dsh-easyrewrite-moe4all.git"
+  },
+  "homepage": "https://github.com/Headmaster218/dsh-easyrewrite-moe4all#readme",
+  "bugs": {
+    "url": "https://github.com/Headmaster218/dsh-easyrewrite-moe4all/issues"
+  },
+  "moe4all": {
+    "upstream": "dsh-easyrewrite@2.4.1",
+    "repository": "https://github.com/Renzic-Stone/DSH-EasyRewrite",
+    "commit": "8bfa03c946e81e6159d0c839ffb7a02c6c52c158"
   }
 }
