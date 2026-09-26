@@ -9,4 +9,6 @@ This is an independent MoE4All edition, not a GitHub fork.
 - Imported artifact: exact npm release snapshot
 - License: MIT; the original `LICENSE` and upstream documentation are retained
 
+Upstream commit history is intentionally not imported: the first commit is the exact source checkpoint named above, and MoE4All changes start after it.
+
 The independent repository lets MoE4All ship and update its tested edition without replacing a user's marketplace package. MoE4All-specific packaging changes are committed after the untouched upstream checkpoint.
