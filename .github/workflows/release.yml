@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*', 'release-*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validation:
+    uses: ./.github/workflows/ci.yml
+  release:
+    needs: validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Require a tagged main commit
+        run: git merge-base --is-ancestor HEAD origin/main
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: ci/host/package-lock.json
+      - run: npm install --global npm@10.9.2 --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix ci/host --ignore-scripts --no-audit --no-fund --fetch-retries=1 --fetch-timeout=30000
+      - name: Build version-matched precompiled assets
+        run: |
+          npm run release:build -- --out dist --tag "$RELEASE_TAG"
+          npm run release:verify -- --out dist
+      - name: Publish verified assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          NAME="$(node -p 'require("./package.json").name')"
+          PRERELEASE="$(node -p 'require("./dist/plugin-release.json").prerelease')"
+          FLAGS=()
+          if [ "$PRERELEASE" = true ]; then FLAGS+=(--prerelease); fi
+          gh release create "$RELEASE_TAG" "dist/$NAME.tgz" dist/SHA256SUMS.txt dist/plugin-release.json \
+            --verify-tag --title "$NAME $RELEASE_TAG" --generate-notes "${FLAGS[@]}"

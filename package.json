@@ -59,8 +59,12 @@
   "license": "MIT",
   "scripts": {
     "build": "node build.mjs",
-    "prepare": "node build.mjs",
-    "prepack": "node build.mjs"
+    "prepack": "npm run ci:check",
+    "ci:check": "node --experimental-vm-modules ci/plugin-ci.mjs check",
+    "ci:test": "node ci/plugin-ci.mjs test",
+    "ci:contract": "node ci/plugin-ci.mjs test-contract",
+    "release:build": "node --experimental-vm-modules ci/plugin-ci.mjs pack",
+    "release:verify": "node ci/plugin-ci.mjs verify-release"
   },
   "repository": {
     "type": "git",
@@ -74,5 +78,6 @@
     "upstream": "dsh-easyrewrite@2.4.1",
     "repository": "https://github.com/Renzic-Stone/DSH-EasyRewrite",
     "commit": "8bfa03c946e81e6159d0c839ffb7a02c6c52c158"
-  }
+  },
+  "packageManager": "npm@10.9.2"
 }

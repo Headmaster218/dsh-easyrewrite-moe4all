@@ -1,0 +1,16 @@
+{
+  "package": "dsh-easyrewrite-moe4all",
+  "clientRequires": [
+    "react",
+    "@deepseek-ai/dsh-client-ui-primitives"
+  ],
+  "tests": [
+    {
+      "kind": "node-test",
+      "directory": "test",
+      "extensions": [
+        ".test.mjs"
+      ]
+    }
+  ]
+}
