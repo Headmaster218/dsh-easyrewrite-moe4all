@@ -59,7 +59,6 @@
   "license": "MIT",
   "scripts": {
     "build": "node build.mjs",
-    "prepack": "npm run ci:check",
     "ci:check": "node --experimental-vm-modules ci/plugin-ci.mjs check",
     "ci:test": "node ci/plugin-ci.mjs test",
     "ci:contract": "node ci/plugin-ci.mjs test-contract",
