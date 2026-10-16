@@ -41,6 +41,10 @@ function validateTag(tag, version) {
   assert(semver.valid(version), 'Package version must be valid SemVer')
   assert(tag === 'v' + version || tag === 'release-' + version, 'Tag must exactly match package version')
 }
+function isPrerelease(version) {
+  const parts = semver.prerelease(version)
+  return parts !== null && !(parts.length === 2 && parts[0] === 'moe4all' && Number.isSafeInteger(parts[1]))
+}
 function sourceCommit() {
   const override = process.env.MOE4ALL_CI_SOURCE_COMMIT
   if (override) {
@@ -139,7 +143,7 @@ async function verifyRelease(out) {
   assert.equal(info.repository, 'Headmaster218/' + manifest.name)
   assert.match(info.commit, /^[a-f0-9]{40}$/u)
   assert.equal(info.commit, sourceCommit(), 'Release commit does not match source')
-  assert.equal(info.prerelease, semver.prerelease(info.version) !== null)
+  assert.equal(info.prerelease, isPrerelease(info.version))
   assert.equal(info.archive.name, manifest.name + '.tgz')
   const archive = join(out, info.archive.name), bytes = readFileSync(archive)
   assert.equal(info.archive.bytes, bytes.length)
@@ -189,7 +193,7 @@ async function pack(out, tag) {
     schema: 'moe4all/plugin-release/v1', name: manifest.name, version: manifest.version,
     tag, repository: 'Headmaster218/' + manifest.name,
     commit: sourceCommit(),
-    prerelease: semver.prerelease(manifest.version) !== null,
+    prerelease: isPrerelease(manifest.version),
     runtime: { node: manifest.engines?.node ?? null, dsh: manifest.engines?.dsh ?? null, peers: manifest.peerDependencies ?? {} },
     validation: { mode: 'committed-runtime', hostImport: json(join(hostRoot, 'package.json')).dependencies['@deepseek-ai/dsh'], fullAgentIntegration: false, gpu: false },
     archive: { name: manifest.name + '.tgz', bytes: bytes.length, sha256: hash(bytes),
@@ -204,6 +208,8 @@ else if (action === 'test') tests()
 else if (action === 'pack') await pack(resolve(values.out ?? 'dist'), values.tag ?? '')
 else if (action === 'verify-release') await verifyRelease(resolve(values.out ?? 'dist'))
 else if (action === 'test-contract') {
+  for (const version of ['1.2.3', '1.2.3-moe4all.1', '1.2.3-moe4all.2']) assert.equal(isPrerelease(version), false, version)
+  for (const version of ['1.2.3-beta.1', '1.2.3-rc.1', '1.2.3-preview.1', '1.2.3-moe4all.2.beta.1']) assert.equal(isPrerelease(version), true, version)
   validateTag('release-1.2.3', '1.2.3')
   validateTag('v1.2.3-beta.1', '1.2.3-beta.1')
   for (const tag of ['release-1.2.4', '../1.2.3', '1.2.3', 'v1.2.3;exit']) assert.throws(() => validateTag(tag, '1.2.3'))

@@ -1,6 +1,6 @@
 {
   "name": "dsh-easyrewrite-moe4all",
-  "version": "2.4.1-moe4all.1",
+  "version": "2.4.1-moe4all.2",
   "description": "MoE4All edition of the DSH message recall and re-edit plugin",
   "type": "module",
   "main": "lib/index.js",
