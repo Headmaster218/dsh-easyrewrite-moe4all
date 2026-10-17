@@ -34,11 +34,12 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: ./.github/actions/dependency-cache
+        id: dependencies
         with:
           node-version: ${{ matrix.node }}
-          cache: npm
-          cache-dependency-path: ci/host/package-lock.json
+      - name: Verify repository-local CI policies
+        run: node --test ci/dependency-cache.test.mjs ci/release-mode.test.mjs
       - name: Use pinned npm
         run: npm install --global npm@10.9.2 --ignore-scripts --no-audit --no-fund
       - name: Install frozen host fixture without lifecycle scripts
